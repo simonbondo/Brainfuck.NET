@@ -6,7 +6,7 @@ I felt inspired while following the [Compiler from scratch](https://www.youtube.
 
 ## Language design
 
-Brainfuck consists of an instruction pointer, a data pointer, memory and 8 simple instructions.
+Brainfuck consists of an instruction pointer, a data pointer, some amount of memory and 8 simple instructions.
 
 The instruction pointer starts at `0` and moves forward by `1` after each instruction (with exceptions). After the last instruction, the program terminates.
 
@@ -27,4 +27,4 @@ instruction | description
 
 To be a valid program, `[` and `]` should always match as a pair. Nesting is also valid.
 
-Any charactor that is not in the list of valid instructions should simply be ignored, similar to whitespace in most regular programming languages.
+Any character that is not in the list of valid instructions should simply be ignored, similar to whitespace in most regular programming languages.
