@@ -6,10 +6,10 @@ namespace bfc
     {
         public SyntaxToken(SyntaxKind kind, int position, string text, object value)
         {
-            Kind = kind;
-            Position = position;
-            Text = text;
-            Value = value;
+            this.Kind = kind;
+            this.Position = position;
+            this.Text = text;
+            this.Value = value;
         }
 
         public SyntaxKind Kind { get; }
