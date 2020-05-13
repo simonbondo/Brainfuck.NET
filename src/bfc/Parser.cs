@@ -7,6 +7,7 @@ namespace bfc
     {
         private readonly SyntaxToken[] tokens;
         private int position;
+
         public Parser(string text)
         {
             var tokens = new List<SyntaxToken>();
@@ -34,5 +35,32 @@ namespace bfc
         }
 
         private SyntaxToken Current => this.Peek(0);
+
+        private SyntaxToken NextToken()
+        {
+            var current = this.Current;
+            this.position++;
+            return current;
+        }
+
+        private SyntaxToken Match(SyntaxKind kind)
+        {
+            if (this.Current.Kind == kind)
+                return this.NextToken();
+
+            return new SyntaxToken(kind, this.Current.Position, null, null);
+        }
+
+        private ExpressionSyntax ParsePrimaryExpression()
+        {
+            var plusToken = this.Match(SyntaxKind.PlusToken);
+            return new IncrementDataPointerExpressionSyntax(plusToken);
+        }
+
+        public ExpressionSyntax Parse()
+        {
+            var primaryExpression = this.ParsePrimaryExpression();
+            return primaryExpression;
+        }
     }
 }
