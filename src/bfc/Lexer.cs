@@ -31,7 +31,7 @@ namespace bfc
         public SyntaxToken NextToken()
         {
             if (this.position >= this.text.Length)
-                return new SyntaxToken(SyntaxKind.EndOfFileToken, this.position, "\0");
+                return new SyntaxToken(SyntaxKind.EndOfFileToken, this.position, "\0", default);
 
             SyntaxToken ReadAsToken(SyntaxKind kind, Func<char, bool> matcher)
             {
@@ -42,7 +42,7 @@ namespace bfc
 
                 var length = this.position - start;
                 var fragment = this.text.Substring(start, length);
-                return new SyntaxToken(kind, start, fragment);
+                return new SyntaxToken(kind, start, fragment, length);
             }
 
             if (char.IsWhiteSpace(this.Current))
@@ -62,24 +62,24 @@ namespace bfc
                 return ReadAsToken(SyntaxKind.DecrementToken, c => c == '-');
 
             if (this.Current == '.')
-                return new SyntaxToken(SyntaxKind.OutputToken, this.position++, ".");
+                return new SyntaxToken(SyntaxKind.OutputToken, this.position++, ".", default);
 
             if (this.Current == ',')
-                return new SyntaxToken(SyntaxKind.InputToken, this.position++, ",");
+                return new SyntaxToken(SyntaxKind.InputToken, this.position++, ",", default);
 
             if (this.Current == '[')
-                return new SyntaxToken(SyntaxKind.OpenBracketToken, this.position++, "[");
+                return new SyntaxToken(SyntaxKind.OpenBracketToken, this.position++, "[", default);
 
             if (this.Current == ']')
-                return new SyntaxToken(SyntaxKind.CloseBracketToken, this.position++, "]");
+                return new SyntaxToken(SyntaxKind.CloseBracketToken, this.position++, "]", default);
 
             if (char.IsLetterOrDigit(this.Current))
                 return ReadAsToken(SyntaxKind.TextToken, char.IsLetterOrDigit);
 
             if (char.IsPunctuation(this.Current) || char.IsSymbol(this.Current))
-                return new SyntaxToken(SyntaxKind.SymbolToken, this.position++, this.text.Substring(this.position - 1, 1));
+                return new SyntaxToken(SyntaxKind.SymbolToken, this.position++, this.text.Substring(this.position - 1, 1), default);
 
-            return new SyntaxToken(SyntaxKind.BadToken, this.position++, this.text.Substring(this.position - 1, 1));
+            return new SyntaxToken(SyntaxKind.BadToken, this.position++, this.text.Substring(this.position - 1, 1), default);
         }
     }
 }

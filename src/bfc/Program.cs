@@ -13,15 +13,25 @@ namespace bfc
                 if (string.IsNullOrWhiteSpace(line))
                     return;
 
-                var lexer = new Lexer(line);
-                while (true)
-                {
-                    var token = lexer.NextToken();
-                    if (token.Kind == SyntaxKind.EndOfFileToken)
-                        break;
+                UseLexer(line);
+            }
+        }
 
-                    Console.WriteLine($"{token.Kind}: '{token.Text}'");
-                }
+        private static void UseLexer(string line)
+        {
+            var lexer = new Lexer(line);
+
+            while (true)
+            {
+                var token = lexer.NextToken();
+                if (token.Kind == SyntaxKind.EndOfFileToken)
+                    break;
+
+                Console.Write($"{token.Kind}: '{token.Text}'");
+                if (token.Value != null)
+                    Console.WriteLine($" {token.Value}");
+
+                Console.WriteLine();
             }
         }
     }
