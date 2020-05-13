@@ -4,17 +4,17 @@ namespace bfc
 {
     public enum SyntaxKind
     {
-        PointerRightToken,
-        PointerLeftToken,
-        IncrementToken,
-        DecrementToken,
-        OutputToken,
-        InputToken,
+        GreaterThanToken,
+        LessThanToken,
+        PlusToken,
+        MinusToken,
+        PeriodToken,
+        CommaToken,
         OpenBracketToken,
         CloseBracketToken,
         WhiteSpaceToken,
-        TextToken,
-        SymbolToken,
+        LetterOrDigitToken,
+        PunctuationOrSymbolToken,
         EndOfFileToken,
         BadToken
     }
