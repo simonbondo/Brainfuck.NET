@@ -33,7 +33,7 @@ namespace bfc
             if (this.position >= this.text.Length)
                 return new SyntaxToken(SyntaxKind.EndOfFileToken, this.position, "\0", default);
 
-            SyntaxToken ReadAsToken(SyntaxKind kind, Func<char, bool> matcher)
+            SyntaxToken ReadContinuousToken(SyntaxKind kind, Func<char, bool> matcher, bool hasValue)
             {
                 var start = this.position;
 
@@ -42,24 +42,23 @@ namespace bfc
 
                 var length = this.position - start;
                 var fragment = this.text.Substring(start, length);
-                return new SyntaxToken(kind, start, fragment, length);
+                return new SyntaxToken(kind, start, fragment, hasValue ? (object)length : default);
             }
 
             if (char.IsWhiteSpace(this.Current))
-                return ReadAsToken(SyntaxKind.WhiteSpaceToken, char.IsWhiteSpace);
+                return ReadContinuousToken(SyntaxKind.WhiteSpaceToken, char.IsWhiteSpace, hasValue: false);
 
-            // TODO: Not sure if the actual instructions should be concatenated here in the lexer or at a later stage (parser)
             if (this.Current == '>')
-                return ReadAsToken(SyntaxKind.PointerRightToken, c => c == '>');
+                return ReadContinuousToken(SyntaxKind.PointerRightToken, c => c == '>', hasValue: true);
 
             if (this.Current == '<')
-                return ReadAsToken(SyntaxKind.PointerLeftToken, c => c == '<');
+                return ReadContinuousToken(SyntaxKind.PointerLeftToken, c => c == '<', hasValue: true);
 
             if (this.Current == '+')
-                return ReadAsToken(SyntaxKind.IncrementToken, c => c == '+');
+                return ReadContinuousToken(SyntaxKind.IncrementToken, c => c == '+', hasValue: true);
 
             if (this.Current == '-')
-                return ReadAsToken(SyntaxKind.DecrementToken, c => c == '-');
+                return ReadContinuousToken(SyntaxKind.DecrementToken, c => c == '-', hasValue: true);
 
             if (this.Current == '.')
                 return new SyntaxToken(SyntaxKind.OutputToken, this.position++, ".", default);
@@ -73,8 +72,9 @@ namespace bfc
             if (this.Current == ']')
                 return new SyntaxToken(SyntaxKind.CloseBracketToken, this.position++, "]", default);
 
+            // TODO: Maybe it would be simpler to just treat any non-instruction as WhiteSpaceTokens (exactly how the language is designed)
             if (char.IsLetterOrDigit(this.Current))
-                return ReadAsToken(SyntaxKind.TextToken, char.IsLetterOrDigit);
+                return ReadContinuousToken(SyntaxKind.TextToken, char.IsLetterOrDigit, hasValue: false);
 
             if (char.IsPunctuation(this.Current) || char.IsSymbol(this.Current))
                 return new SyntaxToken(SyntaxKind.SymbolToken, this.position++, this.text.Substring(this.position - 1, 1), default);

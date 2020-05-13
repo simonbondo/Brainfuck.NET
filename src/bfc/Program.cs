@@ -29,7 +29,7 @@ namespace bfc
 
                 Console.Write($"{token.Kind}: '{token.Text}'");
                 if (token.Value != null)
-                    Console.WriteLine($" {token.Value}");
+                    Console.Write($" {token.Value}");
 
                 Console.WriteLine();
             }
