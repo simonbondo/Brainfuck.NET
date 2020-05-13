@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace bfc
 {
@@ -11,5 +12,10 @@ namespace bfc
 
         public override SyntaxKind Kind => SyntaxKind.IncrementDataPointerExpression;
         public SyntaxToken GreaterThanToken { get; }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            yield return this.GreaterThanToken;
+        }
     }
 }
