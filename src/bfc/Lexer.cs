@@ -49,16 +49,20 @@ namespace bfc
                 return ReadContinuousToken(SyntaxKind.WhiteSpaceToken, char.IsWhiteSpace, hasValue: false);
 
             if (this.Current == '>')
-                return ReadContinuousToken(SyntaxKind.GreaterThanToken, c => c == '>', hasValue: true);
+                return new SyntaxToken(SyntaxKind.GreaterThanToken, this.position++, ">", 1);
+                //return ReadContinuousToken(SyntaxKind.GreaterThanToken, c => c == '>', hasValue: true);
 
             if (this.Current == '<')
-                return ReadContinuousToken(SyntaxKind.LessThanToken, c => c == '<', hasValue: true);
+                return new SyntaxToken(SyntaxKind.LessThanToken, this.position++, "<", 1);
+                //return ReadContinuousToken(SyntaxKind.LessThanToken, c => c == '<', hasValue: true);
 
             if (this.Current == '+')
-                return ReadContinuousToken(SyntaxKind.PlusToken, c => c == '+', hasValue: true);
+                return new SyntaxToken(SyntaxKind.PlusToken, this.position++, "+", 1);
+                //return ReadContinuousToken(SyntaxKind.PlusToken, c => c == '+', hasValue: true);
 
             if (this.Current == '-')
-                return ReadContinuousToken(SyntaxKind.MinusToken, c => c == '-', hasValue: true);
+                return new SyntaxToken(SyntaxKind.MinusToken, this.position++, "-", 1);
+                //return ReadContinuousToken(SyntaxKind.MinusToken, c => c == '-', hasValue: true);
 
             if (this.Current == '.')
                 return new SyntaxToken(SyntaxKind.PeriodToken, this.position++, ".", default);
@@ -73,11 +77,11 @@ namespace bfc
                 return new SyntaxToken(SyntaxKind.CloseBracketToken, this.position++, "]", default);
 
             // TODO: Maybe it would be simpler to just treat any non-instruction as WhiteSpaceTokens (exactly how the language is designed)
-            if (char.IsLetterOrDigit(this.Current))
-                return ReadContinuousToken(SyntaxKind.LetterOrDigitToken, char.IsLetterOrDigit, hasValue: false);
+            //if (char.IsLetterOrDigit(this.Current))
+            //    return ReadContinuousToken(SyntaxKind.LetterOrDigitToken, char.IsLetterOrDigit, hasValue: false);
 
-            if (char.IsPunctuation(this.Current) || char.IsSymbol(this.Current))
-                return new SyntaxToken(SyntaxKind.PunctuationOrSymbolToken, this.position++, this.text.Substring(this.position - 1, 1), default);
+            //if (char.IsPunctuation(this.Current) || char.IsSymbol(this.Current))
+            //    return new SyntaxToken(SyntaxKind.PunctuationOrSymbolToken, this.position++, this.text.Substring(this.position - 1, 1), default);
 
             return new SyntaxToken(SyntaxKind.BadToken, this.position++, this.text.Substring(this.position - 1, 1), default);
         }
