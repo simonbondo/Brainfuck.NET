@@ -39,7 +39,7 @@ namespace bfc
 
         private static void PrettyPrint(SyntaxNode node, string indent = "", bool isLast = true)
         {
-            var marker = isLast ? "└──" : "├──";
+            var marker = isLast ? "└── " : "├── ";
 
             Console.Write(indent);
             Console.Write(marker);
@@ -53,7 +53,7 @@ namespace bfc
 
             Console.WriteLine();
 
-            indent += isLast ? "   " : "│  ";
+            indent += isLast ? "    " : "│   ";
 
             var lastChild = node.GetChildren().LastOrDefault();
 
