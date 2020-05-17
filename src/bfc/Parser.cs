@@ -53,8 +53,8 @@ namespace bfc
 
         private ExpressionSyntax ParsePrimaryExpression()
         {
-            var plusToken = this.Match(SyntaxKind.PlusToken);
-            return new IncrementDataPointerExpressionSyntax(plusToken);
+            var greaterThanToken = this.Match(SyntaxKind.GreaterThanToken);
+            return new IncrementDataPointerExpressionSyntax(greaterThanToken);
         }
 
         public ExpressionSyntax Parse()
