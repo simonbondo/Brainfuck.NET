@@ -66,16 +66,16 @@ namespace bfc
             var originalColor = Console.ForegroundColor;
 
             var parser = new Parser(line);
-            var expression = parser.Parse();
+            var syntaxTree = parser.Parse();
 
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            PrettyPrint(expression);
+            PrettyPrint(syntaxTree.Root);
             Console.ForegroundColor = originalColor;
 
             if (parser.Diagnostics.Any())
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                foreach (var diagnostic in parser.Diagnostics)
+                foreach (var diagnostic in syntaxTree.Diagnostics)
                     Console.WriteLine(diagnostic);
                 Console.ForegroundColor = originalColor;
             }

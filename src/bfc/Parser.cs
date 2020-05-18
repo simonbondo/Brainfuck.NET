@@ -63,10 +63,16 @@ namespace bfc
             return new IncrementDataPointerExpressionSyntax(greaterThanToken);
         }
 
-        public ExpressionSyntax Parse()
+        private ExpressionSyntax ParseExpression()
         {
-            var primaryExpression = this.ParsePrimaryExpression();
-            return primaryExpression;
+            return this.ParsePrimaryExpression();
+        }
+
+        public SyntaxTree Parse()
+        {
+            var expression = this.ParseExpression();
+            var endOfFileToken = this.Match(SyntaxKind.EndOfFileToken);
+            return new SyntaxTree(this.diagnostics, expression, endOfFileToken);
         }
     }
 }
