@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace bfc
 {
@@ -6,11 +7,14 @@ namespace bfc
     {
         private readonly string text;
         private int position;
+        private List<string> diagnostics = new List<string>();
 
         public Lexer(string text)
         {
             this.text = text;
         }
+
+        public IEnumerable<string> Diagnostics => this.diagnostics;
 
         private char Current
         {
@@ -83,6 +87,7 @@ namespace bfc
             //if (char.IsPunctuation(this.Current) || char.IsSymbol(this.Current))
             //    return new SyntaxToken(SyntaxKind.PunctuationOrSymbolToken, this.position++, this.text.Substring(this.position - 1, 1), default);
 
+            this.diagnostics.Add($"ERROR: Bad charater input: '{this.Current}'");
             return new SyntaxToken(SyntaxKind.BadToken, this.position++, this.text.Substring(this.position - 1, 1), default);
         }
     }

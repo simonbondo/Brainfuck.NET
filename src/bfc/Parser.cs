@@ -6,6 +6,8 @@ namespace bfc
     public class Parser
     {
         private readonly SyntaxToken[] tokens;
+
+        private List<string> diagnostics = new List<string>();
         private int position;
 
         public Parser(string text)
@@ -23,7 +25,10 @@ namespace bfc
             } while (token.Kind != SyntaxKind.EndOfFileToken);
 
             this.tokens = tokens.ToArray();
+            this.diagnostics.AddRange(lexer.Diagnostics);
         }
+
+        public IEnumerable<string> Diagnostics => this.diagnostics;
 
         private SyntaxToken Peek(int offset)
         {
@@ -48,6 +53,7 @@ namespace bfc
             if (this.Current.Kind == kind)
                 return this.NextToken();
 
+            this.diagnostics.Add($"ERROR: Unexpected token <{this.Current.Kind}>, expected <{kind}>");
             return new SyntaxToken(kind, this.Current.Position, null, null);
         }
 

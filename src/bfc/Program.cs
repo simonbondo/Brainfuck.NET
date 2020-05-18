@@ -71,6 +71,14 @@ namespace bfc
             Console.ForegroundColor = ConsoleColor.DarkGray;
             PrettyPrint(expression);
             Console.ForegroundColor = originalColor;
+
+            if (parser.Diagnostics.Any())
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                foreach (var diagnostic in parser.Diagnostics)
+                    Console.WriteLine(diagnostic);
+                Console.ForegroundColor = originalColor;
+            }
         }
     }
 }
