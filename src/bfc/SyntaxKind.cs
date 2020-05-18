@@ -17,6 +17,7 @@ namespace bfc
         PunctuationOrSymbolToken,
         EndOfFileToken,
         BadToken,
-        IncrementDataPointerExpression
+        IncrementDataPointerExpression,
+        IncrementMemoryExpression
     }
 }

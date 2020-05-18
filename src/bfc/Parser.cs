@@ -59,8 +59,19 @@ namespace bfc
 
         private ExpressionSyntax ParsePrimaryExpression()
         {
-            var greaterThanToken = this.Match(SyntaxKind.GreaterThanToken);
-            return new IncrementDataPointerExpressionSyntax(greaterThanToken);
+            if (this.Current.Kind == SyntaxKind.GreaterThanToken)
+            {
+                var greaterThanToken = this.Match(SyntaxKind.GreaterThanToken);
+                return new IncrementDataPointerExpressionSyntax(greaterThanToken);
+            }
+            if (this.Current.Kind == SyntaxKind.PlusToken)
+            {
+                var plusToken = this.Match(SyntaxKind.PlusToken);
+                return new IncrementMemoryExpressionSyntax(plusToken);
+            }
+
+            this.diagnostics.Add($"ERROR: Unknown token <{this.Current.Kind}>");
+            return null;
         }
 
         private ExpressionSyntax ParseExpression()
