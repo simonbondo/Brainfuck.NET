@@ -7,6 +7,9 @@ namespace bfc
     {
         static void Main(string[] args)
         {
+            var originalColor = Console.ForegroundColor;
+            var showParseTree = false;
+
             while (true)
             {
                 Console.Write("> ");
@@ -14,31 +17,56 @@ namespace bfc
                 if (string.IsNullOrWhiteSpace(line))
                     return;
 
-                //UseLexer(line);
-                UseParser(line);
-            }
-        }
+                if (line == "#showTree")
+                {
+                    showParseTree = !showParseTree;
+                    Console.WriteLine(showParseTree ? "Showing parse trees." : "Not showing parse trees.");
+                    continue;
+                }
+                else if (line == "#cls")
+                {
+                    Console.Clear();
+                    continue;
+                }
 
-        private static void UseLexer(string line)
-        {
-            var lexer = new Lexer(line);
+                var syntaxTree = SyntaxTree.Parse(line);
 
-            while (true)
-            {
-                var token = lexer.NextToken();
-                if (token.Kind == SyntaxKind.EndOfFileToken)
-                    break;
+                if (showParseTree)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    PrettyPrint(syntaxTree.Root);
+                    Console.ForegroundColor = originalColor;
+                }
 
-                Console.Write($"{token.Kind}: '{token.Text}'");
-                if (token.Value != null)
-                    Console.Write($" {token.Value}");
-
-                Console.WriteLine();
+                if (!syntaxTree.Diagnostics.Any())
+                {
+                    var evaluator = new Evaluator(syntaxTree.Root);
+                    var result = evaluator.Evaluate();
+                    var memory = evaluator.GetMemory();
+                    if (memory.Length > 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        Console.WriteLine($"Memory bytes ({memory.Length}): [ {string.Join(',', memory)} ]");
+                        Console.WriteLine($"Memory chars ({memory.Length}): [ {string.Join(',', memory.Select(b => (char)b))} ]");
+                        Console.ForegroundColor = originalColor;
+                    }
+                    Console.WriteLine(result);
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    foreach (var diagnostic in syntaxTree.Diagnostics)
+                        Console.WriteLine(diagnostic);
+                    Console.ForegroundColor = originalColor;
+                }
             }
         }
 
         private static void PrettyPrint(SyntaxNode node, string indent = "", bool isLast = true)
         {
+            if (node is null)
+                return;
+
             var marker = isLast ? "└── " : "├── ";
 
             Console.Write(indent);
@@ -63,37 +91,7 @@ namespace bfc
 
         private static void UseParser(string line)
         {
-            var originalColor = Console.ForegroundColor;
 
-            var parser = new Parser(line);
-            var syntaxTree = parser.Parse();
-
-            if (syntaxTree.Root != null)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                PrettyPrint(syntaxTree.Root);
-                Console.ForegroundColor = originalColor;
-            }
-
-            if (!parser.Diagnostics.Any())
-            {
-                var evaluator = new Evaluator(syntaxTree.Root);
-                var result = evaluator.Evaluate();
-                var memory = evaluator.GetMemory();
-                if (memory.Length > 0)
-                {
-                    Console.WriteLine($"Memory bytes ({memory.Length}): [ {string.Join(',', memory)} ]");
-                    Console.WriteLine($"Memory chars ({memory.Length}): [ {string.Join(',', memory.Select(b => (char)b))} ]");
-                }
-                Console.WriteLine(result);
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                foreach (var diagnostic in syntaxTree.Diagnostics)
-                    Console.WriteLine(diagnostic);
-                Console.ForegroundColor = originalColor;
-            }
         }
     }
 }
