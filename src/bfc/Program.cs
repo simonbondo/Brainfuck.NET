@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace bfc
+namespace Brainfuck
 {
     class Program
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace bfc
+namespace Brainfuck
 {
     public sealed class IncrementDataPointerExpressionSyntax : ExpressionSyntax
     {

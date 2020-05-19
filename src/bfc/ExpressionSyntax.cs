@@ -1,6 +1,6 @@
 using System;
 
-namespace bfc
+namespace Brainfuck
 {
     public abstract class ExpressionSyntax : SyntaxNode
     {
