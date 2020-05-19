@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Brainfuck
+namespace Brainfuck.CodeAnalysis
 {
     public sealed class SyntaxTree
     {

@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
 
-namespace Brainfuck
+namespace Brainfuck.CodeAnalysis
 {
     public sealed class IncrementMemoryExpressionSyntax : ExpressionSyntax
     {

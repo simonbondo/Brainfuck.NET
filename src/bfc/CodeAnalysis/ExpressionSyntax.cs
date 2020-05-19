@@ -1,6 +1,4 @@
-using System;
-
-namespace Brainfuck
+namespace Brainfuck.CodeAnalysis
 {
     public abstract class ExpressionSyntax : SyntaxNode
     {

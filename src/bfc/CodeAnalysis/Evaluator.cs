@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Immutable;
 
-namespace Brainfuck
+namespace Brainfuck.CodeAnalysis
 {
     public class Evaluator
     {
