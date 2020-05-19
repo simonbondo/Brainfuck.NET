@@ -61,11 +61,11 @@ namespace bfc
                 //return ReadContinuousToken(SyntaxKind.LessThanToken, c => c == '<', hasValue: true);
 
             if (this.Current == '+')
-                return new SyntaxToken(SyntaxKind.PlusToken, this.position++, "+", 1);
+                return new SyntaxToken(SyntaxKind.PlusToken, this.position++, "+", (byte)1);
                 //return ReadContinuousToken(SyntaxKind.PlusToken, c => c == '+', hasValue: true);
 
             if (this.Current == '-')
-                return new SyntaxToken(SyntaxKind.MinusToken, this.position++, "-", 1);
+                return new SyntaxToken(SyntaxKind.MinusToken, this.position++, "-", (byte)1);
                 //return ReadContinuousToken(SyntaxKind.MinusToken, c => c == '-', hasValue: true);
 
             if (this.Current == '.')

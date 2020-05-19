@@ -68,11 +68,26 @@ namespace bfc
             var parser = new Parser(line);
             var syntaxTree = parser.Parse();
 
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            PrettyPrint(syntaxTree.Root);
-            Console.ForegroundColor = originalColor;
+            if (syntaxTree.Root != null)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                PrettyPrint(syntaxTree.Root);
+                Console.ForegroundColor = originalColor;
+            }
 
-            if (parser.Diagnostics.Any())
+            if (!parser.Diagnostics.Any())
+            {
+                var evaluator = new Evaluator(syntaxTree.Root);
+                var result = evaluator.Evaluate();
+                var memory = evaluator.GetMemory();
+                if (memory.Length > 0)
+                {
+                    Console.WriteLine($"Memory bytes ({memory.Length}): [ {string.Join(',', memory)} ]");
+                    Console.WriteLine($"Memory chars ({memory.Length}): [ {string.Join(',', memory.Select(b => (char)b))} ]");
+                }
+                Console.WriteLine(result);
+            }
+            else
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 foreach (var diagnostic in syntaxTree.Diagnostics)
