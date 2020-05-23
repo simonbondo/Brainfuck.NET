@@ -35,11 +35,28 @@ namespace Brainfuck.CodeAnalysis
                 return this.memory[this.dataPointer];
             }
 
+            if (node is DecrementMemoryExpressionSyntax decMemory)
+            {
+                // TODO: Currently, if memory is 0, the new value becomes 255. Is wrapping like this allowed in BF?
+                this.memory[this.dataPointer] -= (byte)decMemory.MinusToken.Value;
+                return this.memory[this.dataPointer];
+            }
+
             if (node is IncrementDataPointerExpressionSyntax incPointer)
             {
                 var targetDataPointer = this.dataPointer + (int)incPointer.GreaterThanToken.Value;
                 if (targetDataPointer >= this.memoryLength)
-                    throw new Exception($"Data pointer trying to move outside memory bounds. Current: {this.dataPointer}, Target: {targetDataPointer}, Memory Bounds: {this.memoryLength}");
+                    throw new Exception($"Data pointer trying to move outside memory bounds. Current: {this.dataPointer}, Target: {targetDataPointer}, Memory Bounds: 0-{this.memoryLength}");
+
+                this.dataPointer = targetDataPointer;
+                return this.memory[this.dataPointer];
+            }
+
+            if (node is DecrementDataPointerExpressionSyntax decPointer)
+            {
+                var targetDataPointer = this.dataPointer - (int)decPointer.LessThanToken.Value;
+                if (targetDataPointer < 0)
+                    throw new Exception($"Data pointer trying to move outside memory bounds. Current: {this.dataPointer}, Target: {targetDataPointer}, Memory Bounds: 0-{this.memoryLength}");
 
                 this.dataPointer = targetDataPointer;
                 return this.memory[this.dataPointer];

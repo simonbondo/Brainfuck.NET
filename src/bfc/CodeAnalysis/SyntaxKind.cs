@@ -16,6 +16,8 @@ namespace Brainfuck.CodeAnalysis
         EndOfFileToken,
         BadToken,
         IncrementDataPointerExpression,
-        IncrementMemoryExpression
+        IncrementMemoryExpression,
+        DecrementDataPointerExpression,
+        DecrementMemoryExpression
     }
 }

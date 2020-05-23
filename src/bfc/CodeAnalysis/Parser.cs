@@ -63,10 +63,20 @@ namespace Brainfuck.CodeAnalysis
                 var greaterThanToken = this.Match(SyntaxKind.GreaterThanToken);
                 return new IncrementDataPointerExpressionSyntax(greaterThanToken);
             }
+            if (this.Current.Kind == SyntaxKind.LessThanToken)
+            {
+                var lessThanToken = this.Match(SyntaxKind.LessThanToken);
+                return new DecrementDataPointerExpressionSyntax(lessThanToken);
+            }
             if (this.Current.Kind == SyntaxKind.PlusToken)
             {
                 var plusToken = this.Match(SyntaxKind.PlusToken);
                 return new IncrementMemoryExpressionSyntax(plusToken);
+            }
+            if (this.Current.Kind == SyntaxKind.MinusToken)
+            {
+                var minusToken = this.Match(SyntaxKind.MinusToken);
+                return new DecrementMemoryExpressionSyntax(minusToken);
             }
 
             this.diagnostics.Add($"ERROR: Unknown token <{this.Current.Kind}>");
